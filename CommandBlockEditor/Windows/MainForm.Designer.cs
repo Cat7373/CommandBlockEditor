@@ -30,13 +30,12 @@
             this.z = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.command = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.menuStrip = new System.Windows.Forms.MenuStrip();
-            this.保存所有修改ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.文件 = new System.Windows.Forms.ToolStripMenuItem();
             this.关闭世界 = new System.Windows.Forms.ToolStripMenuItem();
             this.关闭ToolStripMenuItem = new System.Windows.Forms.ToolStripSeparator();
             this.保存修改 = new System.Windows.Forms.ToolStripMenuItem();
+            this.自动修改命令 = new System.Windows.Forms.ToolStripMenuItem();
             this.folderBrowserDialog = new System.Windows.Forms.FolderBrowserDialog();
-            this.自动修改命令ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.空ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -95,27 +94,27 @@
             // menuStrip
             // 
             this.menuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.保存所有修改ToolStripMenuItem,
-            this.自动修改命令ToolStripMenuItem});
+            this.文件,
+            this.自动修改命令});
             this.menuStrip.Location = new System.Drawing.Point(0, 0);
             this.menuStrip.Name = "menuStrip";
             this.menuStrip.Size = new System.Drawing.Size(399, 25);
             this.menuStrip.TabIndex = 1;
             this.menuStrip.Text = "menuStrip";
             // 
-            // 保存所有修改ToolStripMenuItem
+            // 文件
             // 
-            this.保存所有修改ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.文件.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.关闭世界,
             this.关闭ToolStripMenuItem,
             this.保存修改});
-            this.保存所有修改ToolStripMenuItem.Name = "保存所有修改ToolStripMenuItem";
-            this.保存所有修改ToolStripMenuItem.Size = new System.Drawing.Size(44, 21);
-            this.保存所有修改ToolStripMenuItem.Text = "文件";
+            this.文件.Enabled = false;
+            this.文件.Name = "文件";
+            this.文件.Size = new System.Drawing.Size(44, 21);
+            this.文件.Text = "文件";
             // 
             // 关闭世界
             // 
-            this.关闭世界.Enabled = false;
             this.关闭世界.Name = "关闭世界";
             this.关闭世界.Size = new System.Drawing.Size(152, 22);
             this.关闭世界.Text = "关闭世界";
@@ -128,31 +127,22 @@
             // 
             // 保存修改
             // 
-            this.保存修改.Enabled = false;
             this.保存修改.Name = "保存修改";
             this.保存修改.Size = new System.Drawing.Size(152, 22);
             this.保存修改.Text = "保存修改";
             this.保存修改.Click += new System.EventHandler(this.保存修改_Click);
             // 
+            // 自动修改命令
+            // 
+            this.自动修改命令.Enabled = false;
+            this.自动修改命令.Name = "自动修改命令";
+            this.自动修改命令.Size = new System.Drawing.Size(92, 21);
+            this.自动修改命令.Text = "自动修改命令";
+            // 
             // folderBrowserDialog
             // 
             this.folderBrowserDialog.Description = "选择 Minecraft 地图文件夹";
             this.folderBrowserDialog.ShowNewFolderButton = false;
-            // 
-            // 自动修改命令ToolStripMenuItem
-            // 
-            this.自动修改命令ToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.空ToolStripMenuItem});
-            this.自动修改命令ToolStripMenuItem.Name = "自动修改命令ToolStripMenuItem";
-            this.自动修改命令ToolStripMenuItem.Size = new System.Drawing.Size(92, 21);
-            this.自动修改命令ToolStripMenuItem.Text = "自动修改命令";
-            // 
-            // 空ToolStripMenuItem
-            // 
-            this.空ToolStripMenuItem.Enabled = false;
-            this.空ToolStripMenuItem.Name = "空ToolStripMenuItem";
-            this.空ToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.空ToolStripMenuItem.Text = "(空)";
             // 
             // MainForm
             // 
@@ -185,13 +175,12 @@
         private System.Windows.Forms.ColumnHeader z;
         private System.Windows.Forms.ColumnHeader command;
         private System.Windows.Forms.MenuStrip menuStrip;
-        private System.Windows.Forms.ToolStripMenuItem 保存所有修改ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 文件;
         private System.Windows.Forms.ToolStripMenuItem 关闭世界;
         private System.Windows.Forms.ToolStripSeparator 关闭ToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem 保存修改;
         private System.Windows.Forms.FolderBrowserDialog folderBrowserDialog;
-        private System.Windows.Forms.ToolStripMenuItem 自动修改命令ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem 空ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem 自动修改命令;
     }
 }
 

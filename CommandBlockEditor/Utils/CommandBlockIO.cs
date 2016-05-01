@@ -4,6 +4,7 @@ using Substrate.Core;
 using Substrate.Nbt;
 
 namespace CommandBlockEditor.Utils {
+    // TODO 优化保存速度
     /// <summary>
     /// 命令方块编辑工具类
     /// </summary>
@@ -22,7 +23,7 @@ namespace CommandBlockEditor.Utils {
         internal CommandBlockIO (string[] files) {
             // 遍历文件列表
             foreach (var file in files) {
-                // 打开 Region 文件
+                // 打开 Region 文件 // TODO 非 Region 文件可能抛异常
                 var region = new RegionFile(file);
                 // 添加到 Region 列表
                 this.regions.Add(region);

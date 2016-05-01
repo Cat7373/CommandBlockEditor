@@ -14,7 +14,7 @@
     <TargetFrameworkProfile>Client</TargetFrameworkProfile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x86</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -24,7 +24,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x86</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -33,9 +33,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Substrate, Version=1.3.10.0, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Noesis.Javascript, Version=0.0.0.0, Culture=neutral, PublicKeyToken=ae36d046c7f89f85, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\References\Noesis.Javascript.dll</HintPath>
+    </Reference>
+    <Reference Include="Substrate, Version=1.3.9.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\References\Substrate.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
