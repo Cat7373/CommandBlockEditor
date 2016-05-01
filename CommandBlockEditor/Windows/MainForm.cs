@@ -46,7 +46,6 @@ namespace CommandBlockEditor.Windows {
 
             // 增加命令列表
             List<TileCommandBlock> commandBlocks = this.io.CommandBlocks;
-            this.listView.Items.Clear();
             int id = 1;
             foreach (TileCommandBlock commandBlock in commandBlocks) {
                 ListViewItem item = this.listView.Items.Add(id++.ToString());
@@ -57,11 +56,9 @@ namespace CommandBlockEditor.Windows {
             }
 
             // 自动设置列宽
-            listView.Columns[0].AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent);
-            listView.Columns[1].AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent);
-            listView.Columns[2].AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent);
-            listView.Columns[3].AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent);
-            listView.Columns[4].AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent);
+            foreach (ColumnHeader column in listView.Columns) {
+                column.AutoResize(ColumnHeaderAutoResizeStyle.ColumnContent);
+            }
 
             // 启用 listView 的刷新
             this.listView.EndUpdate();
@@ -72,7 +69,7 @@ namespace CommandBlockEditor.Windows {
         }
 
         /// <summary>
-        /// 关闭已打开的文件
+        /// 关闭已打开的 Region 文件
         /// </summary>
         private void closeFiles () {
             this.文件.Enabled = false;
@@ -88,11 +85,16 @@ namespace CommandBlockEditor.Windows {
         /// <summary>
         /// 打开编辑命令窗口
         /// </summary>
-        /// <param name="id"></param>
-        private void editCommand (int id) {
+        /// <param name="item">要被修改的命令方块在 listView 里的 item</param>
+        private void editCommand (ListViewItem item) {
+            // 命令方块在 this.io.CommandBlocks 中的 index
+            int id = int.Parse(item.Text) - 1;
+            // 获取目标命令方块
             TileCommandBlock tileCommandBlock = this.io.CommandBlocks[id];
-            ListViewItem.ListViewSubItem item = this.listView.Items[id].SubItems[4];
-            new EditTileCommandBlock(item, tileCommandBlock).Show();
+            // 获取命令所在的子 item
+            ListViewItem.ListViewSubItem subItem = this.listView.Items[id].SubItems[4];
+            // 打开编辑命令窗口
+            new EditTileCommandBlock(subItem, tileCommandBlock).Show();
         }
 
         /// <summary>
@@ -180,8 +182,7 @@ namespace CommandBlockEditor.Windows {
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void listView_MouseDoubleClick (object sender, MouseEventArgs e) {
-            int id = int.Parse(this.listView.SelectedItems[0].Text) - 1;
-            this.editCommand(id);
+            this.editCommand(this.listView.SelectedItems[0]);
         }
 
         #endregion
@@ -237,44 +238,6 @@ namespace CommandBlockEditor.Windows {
         private void test () {
 #if DEBUG
             // this.openFiles(new string[] { "E:\\项目\\C#\\CommandBlockEditor\\r.0.0.mca" });
-
-            using (JavascriptContext context = new JavascriptContext()) {
-                // Setting external parameters for the context
-                context.SetParameter("commands", new string[] {
-                        "  /execute @p[c=1] ~ ~ ~ kill @p[r=1]" ,
-                        " tp @p ~ ~100 ~"
-                    });
-
-                // Running the script
-                context.Run(@"
-                        for (var i = 0; i < commands.length; i++) {
-                            // 当前循环的命令
-                            var command = commands[i];
-
-                            // 去除命令前边的空格和 /
-                            command = command.replace(/^\s*\/?/, '');
-
-                            // 给所有的选择器加一个 r=30000000
-                            command = command.replace(/@([paer])([^\[]|$)/g, '@$1[r=30000000]$2');
-                            command = command.replace(/@([paer])\[(.+?)\]/g, function(selector, $1, $2) {
-                                if (!/.*r=\d+.*/.test(selector)) {
-                                    return '@' + $1 + '[r=30000000,' + $2 + ']';
-                                } else {
-                                    return selector;
-                                }
-                            });
-
-                            // 将修改后的命令放回命令列表
-                            commands[i] = command;
-                        }
-                    ");
-
-                // Getting a parameter
-                foreach (var str in (context.GetParameter("commands") as object[])) {
-                    Console.WriteLine("new command: " + str);
-                }
-                Console.WriteLine("v8: " + JavascriptContext.V8Version);
-            }
 #endif
         }
     }

@@ -130,6 +130,9 @@ namespace CommandBlockEditor.Utils {
             }
         }
 
+        /// <summary>
+        /// 销毁本对象，关闭所有已打开的文件
+        /// </summary>
         internal void Dispose () {
             foreach (var region in this.regions) {
                 region.Dispose();
