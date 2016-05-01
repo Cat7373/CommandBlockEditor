@@ -183,7 +183,7 @@ namespace CommandBlockEditor.Windows {
 
         private void 关闭世界_Click (object sender, System.EventArgs e) {
             closeFiles();
-        }     
+        }
 
         private void 保存修改_Click (object sender, System.EventArgs e) {
             this.io.saveAll();
@@ -228,6 +228,7 @@ namespace CommandBlockEditor.Windows {
 
         // 测试代码
         private void test () {
+#if DEBUG
             // this.openFiles(new string[] { "E:\\项目\\C#\\CommandBlockEditor\\r.0.0.mca" });
 
             using (JavascriptContext context = new JavascriptContext()) {
@@ -267,6 +268,7 @@ namespace CommandBlockEditor.Windows {
                 }
                 Console.WriteLine("v8: " + JavascriptContext.V8Version);
             }
+#endif
         }
     }
 }

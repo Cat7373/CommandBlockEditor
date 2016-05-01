@@ -1,10 +1,8 @@
 ﻿using System.Collections.Generic;
-using System.IO;
 using Substrate.Core;
 using Substrate.Nbt;
 
 namespace CommandBlockEditor.Utils {
-    // TODO 优化保存速度
     /// <summary>
     /// 命令方块编辑工具类
     /// </summary>
@@ -14,6 +12,9 @@ namespace CommandBlockEditor.Utils {
         /// </summary>
         internal List<TileCommandBlock> CommandBlocks { get; private set; } = new List<TileCommandBlock>();
 
+        /// <summary>
+        /// 已经打开的 region 文件列表
+        /// </summary>
         private List<RegionFile> regions = new List<RegionFile>();
 
         /// <summary>
@@ -45,7 +46,7 @@ namespace CommandBlockEditor.Utils {
                                 if (tileEntity["id"].ToString().Equals("Control")) {
                                     // 加入 CommandBlock 列表
                                     this.CommandBlocks.Add(new TileCommandBlock(tileEntity, region, chunkX, chunkZ));
-                                    
+
                                     // 输出调试信息
                                     // System.Diagnostics.Debug.WriteLine("Add" + this.commandBlocks[this.commandBlocks.Count - 1]);
                                 }
@@ -60,22 +61,46 @@ namespace CommandBlockEditor.Utils {
         /// 保存所有修改到 Region 文件
         /// </summary>
         internal void saveAll () {
+            // 缓存变量
+            RegionFile lastRegion = null;
+            NbtTree lastTree = null;
+            TagNodeList lastTileEntities = null;
+            int lastChunkX = -1;
+            int lastChunkZ = -1;
+
             // 遍历命令方块列表
             foreach (var commandBlock in this.CommandBlocks) {
-                // 如果编辑过
+                // 如果需要保存
                 if (commandBlock.edit) {
-                    // 打开 Region 文件
-                    var region = commandBlock.region;
-                    // 打开目标 Chunk
-                    var tree = new NbtTree();
-                    tree.ReadFrom(region.GetChunkDataInputStream(commandBlock.chunkX, commandBlock.chunkZ));
+                    // 读取目标区块的 TileEntities
+                    if (lastRegion == commandBlock.region && commandBlock.chunkX == lastChunkX && commandBlock.chunkZ == lastChunkZ) {
+                        // 如果 region chunk 都没变 则触发缓存 继续用上次的 TileEntities
+                    } else {
+                        if (lastRegion != null) {
+                            // 保存之前的修改到文件
+                            using (var stream = lastRegion.GetChunkDataOutputStream(lastChunkX, lastChunkZ)) {
+                                lastTree.WriteTo(stream);
+                            }
+                        }
 
-                    // Level
-                    var level = tree.Root["Level"] as TagNodeCompound;
-                    // TileEntities
-                    var tileEntities = level["TileEntities"] as TagNodeList;
+                        // 打开 Region 文件
+                        lastRegion = commandBlock.region;
+                        // 打开目标 Chunk
+                        lastTree = new NbtTree();
+                        lastTree.ReadFrom(lastRegion.GetChunkDataInputStream(commandBlock.chunkX, commandBlock.chunkZ));
+
+                        // Level
+                        var level = lastTree.Root["Level"] as TagNodeCompound;
+                        // TileEntities
+                        lastTileEntities = level["TileEntities"] as TagNodeList;
+
+                        // 保存区块位置
+                        lastChunkX = commandBlock.chunkX;
+                        lastChunkZ = commandBlock.chunkZ;
+                    }
+
                     // 遍历 TileEntity 列表
-                    foreach (TagNodeCompound tileEntity in tileEntities) {
+                    foreach (TagNodeCompound tileEntity in lastTileEntities) {
                         // 当前 TileEntity 的坐标
                         int x = int.Parse(tileEntity["x"].ToString());
                         int y = int.Parse(tileEntity["y"].ToString());
@@ -85,10 +110,6 @@ namespace CommandBlockEditor.Utils {
                         if (x == commandBlock.x && y == commandBlock.y && z == commandBlock.z) {
                             // 修改 Command
                             tileEntity["Command"] = new TagNodeString(commandBlock.command);
-                            // 写出到文件
-                            using (Stream str = region.GetChunkDataOutputStream(commandBlock.chunkX, commandBlock.chunkZ)) {
-                                tree.WriteTo(str);
-                            }
 
                             // 输出调试信息
                             // System.Diagnostics.Debug.WriteLine("Save" + commandBlock);
@@ -100,10 +121,17 @@ namespace CommandBlockEditor.Utils {
                     }
                 }
             }
+
+            if (lastRegion != null) {
+                // 保存之前的修改到文件
+                using (var str = lastRegion.GetChunkDataOutputStream(lastChunkX, lastChunkZ)) {
+                    lastTree.WriteTo(str);
+                }
+            }
         }
 
         internal void Close () {
-            foreach(var region in this.regions) {
+            foreach (var region in this.regions) {
                 region.Close();
             }
         }
