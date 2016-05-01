@@ -15,8 +15,6 @@ using Noesis.Javascript;
 //   列出计分板新建的变量列表并给出删除这些变量的命令
 //   列出可能出问题的命令如：gamerule
 // 支持命令方块矿车
-// 处理关闭世界后的内存泄漏
-// 异步处理 加进度条
 
 namespace CommandBlockEditor.Windows {
     internal partial class MainForm : Form {
@@ -82,7 +80,7 @@ namespace CommandBlockEditor.Windows {
             this.listView.Items.Clear();
 
             if (this.io != null) {
-                this.io.Close();
+                this.io.Dispose();
                 this.io = null;
             }
         }
@@ -147,6 +145,15 @@ namespace CommandBlockEditor.Windows {
         }
 
         /// <summary>
+        /// 窗口关闭事件
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MainForm_FormClosed (object sender, FormClosedEventArgs e) {
+            this.closeFiles();
+        }
+
+        /// <summary>
         /// 文件拖放事件，先关闭已打开的文件，然后打开拖放进来的文件
         /// </summary>
         /// <param name="sender"></param>
@@ -182,7 +189,7 @@ namespace CommandBlockEditor.Windows {
         #region 菜单事件
 
         private void 关闭世界_Click (object sender, System.EventArgs e) {
-            closeFiles();
+            this.closeFiles();
         }
 
         private void 保存修改_Click (object sender, System.EventArgs e) {

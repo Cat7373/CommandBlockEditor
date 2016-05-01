@@ -130,9 +130,9 @@ namespace CommandBlockEditor.Utils {
             }
         }
 
-        internal void Close () {
+        internal void Dispose () {
             foreach (var region in this.regions) {
-                region.Close();
+                region.Dispose();
             }
         }
     }

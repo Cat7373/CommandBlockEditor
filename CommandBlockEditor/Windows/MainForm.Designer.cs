@@ -116,19 +116,19 @@
             // 关闭世界
             // 
             this.关闭世界.Name = "关闭世界";
-            this.关闭世界.Size = new System.Drawing.Size(152, 22);
+            this.关闭世界.Size = new System.Drawing.Size(124, 22);
             this.关闭世界.Text = "关闭世界";
             this.关闭世界.Click += new System.EventHandler(this.关闭世界_Click);
             // 
             // 关闭ToolStripMenuItem
             // 
             this.关闭ToolStripMenuItem.Name = "关闭ToolStripMenuItem";
-            this.关闭ToolStripMenuItem.Size = new System.Drawing.Size(149, 6);
+            this.关闭ToolStripMenuItem.Size = new System.Drawing.Size(121, 6);
             // 
             // 保存修改
             // 
             this.保存修改.Name = "保存修改";
-            this.保存修改.Size = new System.Drawing.Size(152, 22);
+            this.保存修改.Size = new System.Drawing.Size(124, 22);
             this.保存修改.Text = "保存修改";
             this.保存修改.Click += new System.EventHandler(this.保存修改_Click);
             // 
@@ -157,6 +157,7 @@
             this.MainMenuStrip = this.menuStrip;
             this.Name = "MainForm";
             this.Text = "MainForm";
+            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.MainForm_FormClosed);
             this.Load += new System.EventHandler(this.MainForm_Load);
             this.Shown += new System.EventHandler(this.MainForm_Shown);
             this.menuStrip.ResumeLayout(false);
